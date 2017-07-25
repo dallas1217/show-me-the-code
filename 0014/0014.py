@@ -1,28 +1,20 @@
-#!/usr/bin/python
-#coding=utf-8
+#-*- coding=utf-8 -*-
 
-from xlwt import *
-
-def load_txt(txt):
-    dic={}
-    f=open(txt,'rb')
-    line=f.readlines()
-    dic=eval(''.join(line))
-    return dic
-
-def input_info(dic):
-    w=Workbook()
-    sheet=w.add_sheet('Sheet1',cell_overwrite_ok=True)
-    for key in dic.keys():
-        sheet.write(int(key)-1,0,key)
-        for i in range(len(dic[key])):
-            sheet.write(int(key)-1,i+1,dic[key][i])
-    w.save('excelFile.xls')
-    print "Make xlsx done"
+from openpyxl import Workbook
+from openpyxl import load_workbook
 
 
+with open('student_info.txt','r') as f:
+    data = f.read()
+    wb = Workbook()
+    ws = wb.create_sheet(0)
+    ws.title = 'student'
 
-if __name__=='__main__':
-    dic=load_txt('student.txt')
-    input_info(dic)
+    for keys, values in eval(data).items():
+        ws['A%s' % keys].value = keys
+        for i in range(0, 4):
+            ws['%s%s' % (chr(i+66), keys)].value = values[i]
+            
+    
+    wb.save('0014.xlsx')
 ~                                
